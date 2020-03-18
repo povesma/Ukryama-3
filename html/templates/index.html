@@ -41,7 +41,7 @@
                 <legal-template-component v-bind:legal-templates.sync="legalTemplates" v-if="legalTemplate.id" v-bind:legal-template="legalTemplate" v-bind:changed.sync="legalTemplate.changed" v-bind:legal-template-description="legalTemplateDescription" v-on:emit-search-by-tag="rootSearchByTag($event)"></legal-template-component>
                 <legal-template-variables-component v-if="legalTemplate.id" v-bind:legal-template="legalTemplate" v-bind:legal-template-description="legalTemplateDescription"></legal-template-variables-component>
         </div>
-        <br><br> {{ stringifiedAll }}
+<!-- {{ stringifiedAll }} -->
     </div>
 
     <script type="text/javascript">
