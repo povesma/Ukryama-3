@@ -129,7 +129,7 @@
                     deep: true
                 }},
 
-            template:'<div class="cell"><h2>Редагування шаблону</h2>                <p>{{  legalTemplateDescription.id  }}:  {{  legalTemplate.id  }}</p>                <p>{{  legalTemplateDescription.title  }}: <input type="text" v-model="legalTemplate.title"></p><p>{{  legalTemplateDescription.type  }}: <input type="text" v-model="legalTemplate.type"></p><p>{{  legalTemplateDescription.pug  }}:<br>                <textarea v-model="legalTemplate.pug"></textarea></p>                <p><ul><li  v-for="(tag, tagIndex) in legalTemplate.tags">{{ tag }}<button @click="searchByTag(tag)">Шукати за тегом</button><button @click="deleteTag(tagIndex)">Видалити тег</button></li></ul></p>                <p><input type="text" v-model="newTag"><button @click="addTemplateTag">Add tag</button></p></div>',
+            template:'<div class="cell cell_tpl"><h2>Редагування шаблону <span>{{  legalTemplateDescription.id  }}:  {{  legalTemplate.id  }}</span></h2> <div class="tpl_name_type"><div class="field"><label>{{  legalTemplateDescription.title  }}:</label><input type="text" v-model="legalTemplate.title"></div><div class="field"><label>{{  legalTemplateDescription.type  }}:</label><input type="text" v-model="legalTemplate.type"></div></div><div class="tpl_tags"><ul><li  v-for="(tag, tagIndex) in legalTemplate.tags"><button @click="searchByTag(tag)" title="Шукати за тегом">{{ tag }}</button><button @click="deleteTag(tagIndex)" title="Видалити тег"><i class="fas fa-minus-circle"></i></button></li></ul></div><p>{{  legalTemplateDescription.pug  }}:<br>                <textarea v-model="legalTemplate.pug"></textarea></p><p><input type="text" v-model="newTag"><button @click="addTemplateTag">Add tag</button></p></div>',
             methods:{
                     addTemplateTag:function(){
                         this.legalTemplate.tags.push(this.newTag);
@@ -176,7 +176,7 @@
                 prefix:"",
                 legalTemplate:{},
                 legalTemplateDescription:{
-                    "id":"Унікальний ідентифікатор шаблону",
+                    "id":"ID",
                     "title":"Назва шаблону",
                     "type":"Тип шаблону",
                     "pug":"pug код шаблону",
