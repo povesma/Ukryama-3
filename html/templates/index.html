@@ -59,7 +59,7 @@
                     userTag:''
                 }
             },
-            template: '<div class="cell"><h2>Перелік шаблонів<button @click="createLegalTemplate()" class="btn_create">Створити новий шаблон</button><button @click="saveLegalTemplates()" class="btn_save_all">SaveAll</button></h2><ul class="list_tpl">             <li v-for="(oneTemplate, index) in legalTemplates"><button @click="openLegalTemplate(index)" class="btn_tpl_name">{{ oneTemplate.title }}</button><button @click="saveLegalTemplate" class="btn_save">Save</button></li></ul><hr>            <p><input type="text" v-model="userTag"></p>            <button v-for="(tag, index) in tags" @click="searchByTag(tag)">{{ tag }}</button></div>',
+            template: '<div class="cell"><h2>Перелік шаблонів<button @click="createLegalTemplate()" class="btn_create">Створити новий шаблон</button><button @click="saveLegalTemplates()" class="btn_save_all"><i class="far fa-save"></i></button></h2><ul class="list_tpl">             <li v-for="(oneTemplate, index) in legalTemplates"><button @click="openLegalTemplate(index)" class="btn_tpl_name">{{ oneTemplate.title }}</button><button @click="saveLegalTemplate" class="btn_save">Save</button></li></ul><hr>            <p><input type="text" v-model="userTag"></p>            <button v-for="(tag, index) in tags" @click="searchByTag(tag)">{{ tag }}</button></div>',
             
             methods:{
                 openLegalTemplate: function(index){
