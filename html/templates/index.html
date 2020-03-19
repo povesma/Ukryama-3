@@ -141,7 +141,10 @@
                     },
                     deleteTag:function(tagIndex){
                         this.legalTemplate.tags.splice(tagIndex, 1)
-                    }
+                    },  
+                saveLegalTemplate: function(index){
+                    this.$emit("emit-save-legal-template")
+                }
             }
         })
 
