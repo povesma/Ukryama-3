@@ -143,7 +143,11 @@
                         this.legalTemplate.tags.splice(tagIndex, 1)
                     },  
                 saveLegalTemplate: function(){
-                    this.$emit("emit-save-legal-template")
+                    var xhr= new XMLHttpRequest();
+                    xhr.open("PUT", (prefix+'api/update'));
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhr.send(JSON.stringify(this.legalTemplate));
+                    console.log(this.legalTemplate)
                 }
             }
         })
