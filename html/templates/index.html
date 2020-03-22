@@ -100,7 +100,15 @@
                         })
                     }
                 }
-            }
+            },
+		mounted: function () {
+	
+	// collapse sidebar
+	$('.btn_collapse').on('click', function(){
+		$('#app').toggleClass('app_collapsed');
+	});
+	
+}
 
         })
 
@@ -149,7 +157,6 @@
             },
 mounted: function () {
  // tabs
-    $('.tpl_headings_holder').css('color', 'red');
     $('.tpl_headings_holder a').on('click', function(e){
        e.preventDefault();
        var tab = $(this).attr('href');
@@ -177,11 +184,6 @@ $(document).bind('fscreenchange', function (e, state, elem) {
     }
     
 });
-	
-	// collapse sidebar
-	$('.btn_collapse').on('click', function(){
-		$('#app').toggleClass('app_collapsed');
-	});
 	
 }
         })
