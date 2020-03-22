@@ -200,7 +200,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 legalTemplate:Object,
                 legalTemplateDescription:Object
             },
-            template:'<div class="cell"><h2>Задавання змінних</h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables"><div class="tpl_chan_heading"><h4>{{ variable.name }}</h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><!-- <strong>{{ legalTemplate.name }}</strong> --></div><ul><li v-for="(value, name) in variable">{{ legalTemplateDescription.variables[name] }}: <input type="text" v-model="legalTemplate.variables[index][name]"></li></ul></li></ul><button @click="createLegalTemplateVariable">Додати змінну</button></div>',
+            template:'<div class="cell"><h2>Задавання змінних</h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables"><div class="tpl_chan_heading"><h4>{{ variable.name }}</h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6></div><ul><li v-for="(value, name) in variable">{{ legalTemplateDescription.variables[name] }}: <input type="text" v-model="legalTemplate.variables[index][name]"></li></ul></li></ul><button @click="createLegalTemplateVariable">Додати змінну</button></div>',
             methods:{
                 createLegalTemplateVariable: function(){
                     this.legalTemplate.variables.push({
