@@ -178,6 +178,11 @@ $(document).bind('fscreenchange', function (e, state, elem) {
     
 });
 	
+	// collapse sidebar
+	$('.btn_collapse').on('click', function(){
+		$('#app').toggleClass('app_collapsed');
+	});
+	
 }
         })
 
