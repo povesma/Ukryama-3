@@ -220,9 +220,11 @@ $(document).bind('fscreenchange', function (e, state, elem) {
             },
 		mounted: function () {
  // accordion
-    $(".tpl_chan_heading").click(function () {
+    $(".tpl_chan_heading").each(function () {
+	    $(this).on('click', function(){
 	$(this).toggleClass('active');
-    	$(this).next().slideToggle(500);
+    	$(this).parent().find('.tpl_chan_body').slideToggle(500);
+		    });
     });
     
 }
