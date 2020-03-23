@@ -196,7 +196,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
 	  $(this).parent().toggleClass('active');
 	  });
 	$('.tpl_dd_holder li').on('click', function(){
-		var type = $(this).html();
+		var type = $(this).text();
 	$(this).parent().parent().find('input').val(type);
 	  $(this).parent().parent().toggleClass('active');
 	  });
