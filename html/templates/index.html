@@ -255,6 +255,16 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 legalTemplates:[],
                 tags:['1Tag1','1Tag2','2Tag1','2Tag2','3Tag1','3Tag2']
             },
+	mounted: function () {
+ // accordion
+    $(".tpl_chan_heading").each(function () {
+	    $(this).live('click', function(){
+	$(this).toggleClass('active');
+    	$(this).parent().find('.tpl_chan_body').slideToggle(500);
+		    });
+    });
+    
+},
 
             created: function(){
                 var xhr= new XMLHttpRequest();
@@ -308,17 +318,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 stringifiedAll: function() {
                     return JSON.stringify(this.legalTemplates);
                 }
-            },
-		mounted: function () {
- // accordion
-    $(".tpl_chan_heading").each(function () {
-	    $(this).on('click', function(){
-	$(this).toggleClass('active');
-    	$(this).parent().find('.tpl_chan_body').slideToggle(500);
-		    });
-    });
-    
-}
+            }
         })
     </script>
 </body>
