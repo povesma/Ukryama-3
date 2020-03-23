@@ -198,8 +198,6 @@ $(document).bind('fscreenchange', function (e, state, elem) {
 	$('.tpl_dd_holder li').on('click', function(){
 		var type = $(this).text();
 	$(this).parent().parent().find('input').val(type);
-	$(this).parent().parent().find('input').html(type);
-	$(this).parent().parent().find('input').text(type);
 	  $(this).parent().parent().toggleClass('active');
 	  });
 }
