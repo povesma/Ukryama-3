@@ -191,7 +191,15 @@ $(document).bind('fscreenchange', function (e, state, elem) {
     }
     
 });
-	
+// drop down type
+	$('.tpl_dd_holder).on('click', function(){
+	  $('this').parent().toggleClass('active');
+	  });
+		$('.tpl_dd_holder li).on('click', function(){
+		var type= $(this).html();
+			  $('this').parent().find('input).attr('value', type);
+	  $('this').parent().parent().toggleClass('active');
+	  });
 }
         })
 
