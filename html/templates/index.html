@@ -308,7 +308,17 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 stringifiedAll: function() {
                     return JSON.stringify(this.legalTemplates);
                 }
-            }
+            },
+		mounted: function () {
+ // accordion
+    $(".tpl_chan_heading").each(function () {
+	    $(this).on('click', function(){
+	$(this).toggleClass('active');
+    	$(this).parent().find('.tpl_chan_body').slideToggle(500);
+		    });
+    });
+    
+}
         })
     </script>
 </body>
