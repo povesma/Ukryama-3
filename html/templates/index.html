@@ -226,8 +226,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 saveLegalTemplate: function(index){
                     this.$emit("emit-save-legal-template")
                 }		
-            },
-		computed: { iconClass() { return this.showMenu ? "icon-close" : "icon-menu"; }}
+            }
         });
 
         var vmMain = new Vue({
@@ -249,9 +248,8 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                         "defaultValue":"Значення за замовчуванням",
                         "currentValue":"Значення в даний момент",
                         "required":"Обов'язковість змінної"
-                    },		
-    		showMenu: false
-  }
+                    },
+			    showMenu: {}
                 },
                 // currentIndex:null,
                 legalTemplates:[],
@@ -309,7 +307,8 @@ $(document).bind('fscreenchange', function (e, state, elem) {
             computed:{
                 stringifiedAll: function() {
                     return JSON.stringify(this.legalTemplates);
-                }
+                },
+ 		iconClass: function() { return this.showMenu ? "icon-close" : "icon-menu"; }
             }
         })
     </script>
