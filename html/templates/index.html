@@ -194,11 +194,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
 // drop down type
 	$('.tpl_dd_button').on('click', function(){
 	  $(this).parent().toggleClass('active');
-	  });
-	$('.tpl_dd_holder li').on('click', function(){
-		var type = $(this).text();
-	$(this).parent().parent().find('input').val(type);
-	  $(this).parent().parent().toggleClass('active');
+$(this).parent().find('select').trigger('click');
 	  });
 }
         })
