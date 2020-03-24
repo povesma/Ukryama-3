@@ -208,7 +208,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 legalTemplate:Object,
                 legalTemplateDescription:Object
             },
-            template:'<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ "expanded-menu": isExpanded }"><div class="tpl_chan_heading" v-on:click="expandmenu"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;"><input type="radio" id="radioTrue" value=true v-model="legalTemplate.variables[index][name]"><label for="radioTrue">True</label><input type="radio" id="radioFalse" value=false v-model="legalTemplate.variables[index][name]"><label for="radioFalse">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
+            template:'<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ "expanded-menu": isExpanded }"><div class="tpl_chan_heading" @click="expandmenu"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;"><input type="radio" id="radioTrue" value=true v-model="legalTemplate.variables[index][name]"><label for="radioTrue">True</label><input type="radio" id="radioFalse" value=false v-model="legalTemplate.variables[index][name]"><label for="radioFalse">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
             methods:{
                 createLegalTemplateVariable: function(){
                     this.legalTemplate.variables.push({
@@ -222,12 +222,13 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                         "required":true
                     })
                 },
+		    expandmenu: function(){
+     		    this.isExpanded = !this.isExpanded;
+   		},
+		    
                 saveLegalTemplate: function(index){
                     this.$emit("emit-save-legal-template")
-                },
-		expandmenu: function(){
-     		    this.isExpanded = !this.isExpanded;
-   		}		
+                }		
             }
         })
 
@@ -256,16 +257,6 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 legalTemplates:[],
                 tags:['1Tag1','1Tag2','2Tag1','2Tag2','3Tag1','3Tag2']
             },
-	mounted: function () {
- // accordion
-    $(".tpl_chan_heading").each(function () {
-	    $(this).live('click', function(){
-	$(this).toggleClass('active');
-    	$(this).parent().find('.tpl_chan_body').slideToggle(500);
-		    });
-    });
-    
-},
 
             created: function(){
                 var xhr= new XMLHttpRequest();
@@ -294,6 +285,10 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                     });
                     this.legalTemplate=this.legalTemplates[(this.legalTemplates.length-1)]
                 },
+		      expandmenu: function(){
+     		    this.isExpanded = !this.isExpanded;
+   		},
+		    
                 rootSaveLegalTemplate: function(index) {
                         delete this.legalTemplate.changed
                         var xhr= new XMLHttpRequest();
