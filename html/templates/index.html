@@ -206,7 +206,9 @@ $(document).bind('fscreenchange', function (e, state, elem) {
         Vue.component('legal-template-variables-component', {
 		  data:function(){
                 return{
-		            "isActive": null
+		            "isActive": null,
+			"radioTrue": "radioTrue",
+			"radioFalse": "radioFalse"
                     }
                 },
             props:{
@@ -247,6 +249,8 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                     "title":"Назва шаблону",
                     "type":"Тип шаблону",
                     "pug":"PUG код шаблону",
+			"radioTrue": "radioTrue",
+			"radioFalse": "radioFalse",
                     "variables":{
                         "id":"Унікальний ідентифікатор змінної",
                         "name":"Ім'я змінної",
