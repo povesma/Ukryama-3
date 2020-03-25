@@ -204,7 +204,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                 legalTemplate:Object,
                 legalTemplateDescription:Object
             },
-            template:'<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" ><div class="tpl_chan_heading" @click="showAdvanced(index)"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;" class="field_radiobuttons"><input type="radio" v-bind:id="legalTemplateDescription.variables[radioTrue] + variable.id" value=true v-model="legalTemplate.variables[index][name]"><label for="radioTrue">True</label><input type="radio" v-bind:id="legalTemplateDescription.variables[radioFalse]+variable.id" value=false v-model="legalTemplate.variables[index][name]"><label for="radioFalse">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
+            template:'<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" ><div class="tpl_chan_heading" @click="showAdvanced(index)"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;" class="field_radiobuttons"><input type="radio" v-bind:id="legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]"><label for="radioTrue">True</label><input type="radio" v-bind:id="legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]"><label for="radioFalse">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
             methods:{
 		     showAdvanced: function(index) {
             this.isActive = this.isActive === index ? null : index
@@ -238,6 +238,8 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                     "title":"Назва шаблону",
                     "type":"Тип шаблону",
                     "pug":"PUG код шаблону",
+		"radioTrue":"radioTrue",
+		"radioFalse":"radioFalse",
                     "variables":{
                         "id":"Унікальний ідентифікатор змінної",
                         "name":"Ім'я змінної",
@@ -246,9 +248,7 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                         "testValue":"Значення для тестування",
                         "defaultValue":"Значення за замовчуванням",
                         "currentValue":"Значення в даний момент",
-                        "required":"Обов'язковість змінної",
-			 "radioTrue": "radioTrue",
-			"radioFalse": "radioFalse"
+                        "required":"Обов'язковість змінної"
                     },
                 },
                 // currentIndex:null,
@@ -283,6 +283,8 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                         "title":'',
                         "type":"",
                         "pug":"",
+			"radioTrue":"",
+			"radioFalse":"",
                         "variables":[],
                         "tags":[]
                     });
