@@ -116,7 +116,7 @@
             data:function(){
                 return{
                     newTag:"",
-		activeItem: "tpl_tab_pug"
+		 "activeItem":"tpl_tab_pug"
                     }
                 },
             props:{
@@ -155,10 +155,10 @@
                     deleteTag:function(tagIndex){
                         this.legalTemplate.tags.splice(tagIndex, 1)
                     },
-	    	isTab: function(menuItem) {
+	    	isTab (menuItem) {
       return this.activeItem === menuItem
     },
-    setTab: function(menuItem) {
+    setTab (menuItem) {
       this.activeItem = menuItem
     }
             },
