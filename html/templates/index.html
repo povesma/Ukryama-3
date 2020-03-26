@@ -8,261 +8,315 @@
     <script src="https://beyachted.com/Ukryama-3-master/html/templates/fontawesome/js/all.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.8/uuid.min.js"></script>
-   
+
     <script>uuid();</script>
     <script>
-        var prefix="";
-        if (document.URL.slice(-1)=='/'){prefix='../'};
+        var prefix = "";
+        if (document.URL.slice(-1) == '/') {
+            prefix = '../'
+        }
+        ;
     </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js" type="text/javascript"
+            charset="utf-8"></script>
 
-<style>
-.cell {
-    display: table-cell;
-    padding: 9px;
-}
+    <style>
+        .cell {
+            display: table-cell;
+            padding: 9px;
+        }
 
-.tbl {
-  display: table;
-}
-.bgred {
-    background-color: red;
-}
+        .tbl {
+            display: table;
+        }
 
-.bgnormal {
-    background-color: transparent;
-}
-</style>
+        .bgred {
+            background-color: red;
+        }
+
+        .bgnormal {
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
 <header>
-<h1>Шаблони - WebDesign</h1>
+    <h1>Шаблони - WebDesign</h1>
 </header>
 
-    <div id="app">
-        <div class="tbl">
-                <legal-templates-list-component v-bind:legal-templates.sync="legalTemplates" v-bind:legal-template.sync="legalTemplate" v-bind:tags="tags" v-on:emit-create-legal-template="rootCreateLegalTemplate" v-on:emit-save-legal-template="rootSaveLegalTemplate" v-on:emit-search-by-user-tag="rootSearchByTag($event)" v-on:emit-search-by-tag="rootSearchByTag($event)"></legal-templates-list-component>
-                <legal-template-component v-bind:legal-templates.sync="legalTemplates" v-if="legalTemplate.id" v-bind:legal-template="legalTemplate" v-bind:changed.sync="legalTemplate.changed" v-bind:legal-template-description="legalTemplateDescription" v-on:emit-search-by-tag="rootSearchByTag($event)"></legal-template-component>
-                <legal-template-variables-component v-if="legalTemplate.id" v-bind:legal-template="legalTemplate" v-bind:legal-template-description="legalTemplateDescription"></legal-template-variables-component>
-        </div>
-<!-- {{ stringifiedAll }} -->
+<div id="app">
+    <div class="tbl">
+        <legal-templates-list-component v-bind:legal-templates.sync="legalTemplates"
+                                        v-bind:legal-template.sync="legalTemplate" v-bind:tags="tags"
+                                        v-on:emit-create-legal-template="rootCreateLegalTemplate"
+                                        v-on:emit-save-legal-template="rootSaveLegalTemplate"
+                                        v-on:emit-search-by-user-tag="rootSearchByTag($event)"
+                                        v-on:emit-search-by-tag="rootSearchByTag($event)"></legal-templates-list-component>
+        <legal-template-component v-bind:legal-templates.sync="legalTemplates" v-if="legalTemplate.id"
+                                  v-bind:legal-template="legalTemplate" v-bind:changed.sync="legalTemplate.changed"
+                                  v-bind:legal-template-description="legalTemplateDescription"
+                                  v-on:emit-search-by-tag="rootSearchByTag($event)"></legal-template-component>
+        <legal-template-variables-component v-if="legalTemplate.id" v-bind:legal-template="legalTemplate"
+                                            v-bind:legal-template-description="legalTemplateDescription"></legal-template-variables-component>
     </div>
+    <!-- {{ stringifiedAll }} -->
+</div>
 
-    <script type="text/javascript">
-        Vue.component('legal-templates-list-component',{
-            props: {
-                legalTemplates: Array,
-                legalTemplate: Object,
-                tags: Array
-            },
-            data: function() {
-                return {
-                    curIndex: 0,
-                    bntStyleNormal: {'background-color': 'red'},
-                    bntStyleChanged: {'background-color': 'red'},
-                    userTag:''
-                }
-            },
-            template: '<div class="cell cell_tpls"><button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button><h2>Перелік шаблонів<button @click="createLegalTemplate()" class="btn_create" title="Створити новий шаблон"><i class="fas fa-plus"></i></button><button @click="saveLegalTemplates()" class="btn_save_all" title="Зберегти всі шаблони"><i class="fas fa-save"></i></button></h2><ul class="list_tpl">             <li v-for="(oneTemplate, index) in legalTemplates"><button @click="openLegalTemplate(index)" class="btn_tpl_name" title="Редагувати шаблон">{{ oneTemplate.title }}</button><button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button></li></ul><div class="tpl_tags_wrap"><div class="field"><input type="text" v-model="userTag" placeholder="Шукати тег"></div><div class="tpl_tags_list"><button v-for="(tag, index) in tags" @click="searchByTag(tag)" class="tpl_tag_single">{{ tag }}</button></div></div></div>',
-            
-            methods:{
-                openLegalTemplate: function(index){
-                    this.$emit("update:legalTemplate", this.legalTemplates[index]);
-                    this.curIndex = index;
-                    console.log(this.curIndex, this.legalTemplate);
-                },
-                createLegalTemplate: function() {
-                    this.$emit("emit-create-legal-template")
-                },
-                saveLegalTemplates: function(){
-                    var xhr= new XMLHttpRequest();
-                    xhr.open("PUT", (prefix+'api/update'));
-                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    xhr.send(JSON.stringify(this.legalTemplates));
-                    console.log(this.legalTemplates)
-                },
-                saveLegalTemplate: function(index){
-                    this.$emit("emit-save-legal-template")
-                },
-                searchByUserTag: function(userTag){
-                    this.$emit("emit-search-by-user-tag",this.userTag)
-                },
-                searchByTag:function(tag){
-                        console.log(tag);
-                        this.$emit("emit-search-by-tag", tag);
-                    },
-            },
-            watch:{
-                userTag:{
-                    handler(newUserTag){
-                        this.tags=this.tags.find(function(tagInTags){
-                            return tagInTags.includes(newUserTag)
-                        })
-                    }
-                }
-            },
-		mounted: function () {
-	
-	// collapse sidebar
-	$('.btn_collapse').on('click', function(){
-		$('#app').toggleClass('app_collapsed');
-	});
-	
-}
-
-        })
-
-        Vue.component('legal-template-component', {
-            data:function(){
-                return{
-                    newTag:""
-                    }
-                },
-            props:{
-                legalTemplate:Object,
-                legalTemplates:Array,
-                legalTemplateDescription:Object,
-                changed: Boolean
-            },
-            watch: {
-                legalTemplate: {
-                    handler(newT, oldT) {
-                        if (oldT.id && newT.id == oldT.id) { //real edit
-                            if (!newT.changed) {
-                                newT.changed = true;
-                                console.log("Changed !", JSON.stringify(oldT), JSON.stringify(newT));
-                                this.$emit("update:changed", true);
-                                this.$emit("update:legalTemplates", this.legalTemplates);
-                            }
-                        } else {
-                            console.log("Template SELECTED");
-                        }
-                    },
-                    deep: true
-                }},
-
-            template:'<div class="cell cell_tpl"><div class="tpl_heading"><h2>Шаблон {{legalTemplate.title}}<span>{{legalTemplate.type}}</span><button class="btn_edit" title="Редагувати"><i class="fas fa-pen"></i></button><button class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button></h2><ul><li>Теги:</li>                   <li v-for="(tag, tagIndex) in legalTemplate.tags">                        <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button></li></ul> </div><div class="tpl_headings_holder"><a href="#tpl_tab_pug" class="active">Редагування PUG</a><a href="#tpl_tab_preview">Попередній перегляд</a><a href="#tpl_tab_main" class="tpl_head_main">Основні значення</a></div><div class="tpl_body_holder">        <div class="tpl_body" id="tpl_tab_main"><span class="tpl_id">{{  legalTemplateDescription.id  }}:  {{  legalTemplate.id  }}</span><div class="tpl_name_type">                <div class="field"><label>{{ legalTemplateDescription.title }}:</label><input type="text"                                                                                              v-model="legalTemplate.title">                </div>                <div class="field tpl_dd_holder"><label>{{ legalTemplateDescription.type }}:</label><div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div><select v-model="legalTemplate.type"> <option>full</option> <option>header</option> <option>footer</option> </select>                </div>            </div>            <div class="tpl_tag_field">                <div class="field"><label>Додати тег:</label><input type="text" v-model="newTag">                    <button @click="addTemplateTag" title="Додати тег"><i class="fas fa-plus"></i></button>                </div>            </div>            <div class="tpl_tags">                <ul>                    <li v-for="(tag, tagIndex) in legalTemplate.tags">                        <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}                        </button>                        <button @click="deleteTag(tagIndex)" title="Видалити тег" class="tpl_tag_delete"><i class="fas fa-trash-alt"></i></button>                    </li>                </ul>            </div>        </div>        <div class="tpl_body active" id="tpl_tab_pug">            <div class="tpl_pug">                <div class="field">                    <div class="tpl_extras">              <button class="btn_screen_full_exit" title="Закрити весь екран"><i class="fas fa-compress-arrows-alt"></i></button>          <button class="btn_screen_full" title="Відкрити весь екран"><i                                class="fas fa-expand-arrows-alt"></i>                        </button>                        <button class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>                    </div>                    <label>{{ legalTemplateDescription.pug }}:</label><textarea v-model="legalTemplate.pug"></textarea>                </div>            </div>        </div>    </div></div>',
-            methods:{
-                    addTemplateTag:function(){
-                        this.legalTemplate.tags.push(this.newTag);
-                        this.newTag="";
-                    },
-                    searchByTag:function(tag){
-                        console.log(tag);
-                        this.$emit("emit-search-by-tag", tag);
-                    },
-                    deleteTag:function(tagIndex){
-                        this.legalTemplate.tags.splice(tagIndex, 1)
-                    }
-            },
-mounted: function () {
- // tabs
-    $('.tpl_headings_holder a').on('click', function(e){
-       e.preventDefault();
-       var tab = $(this).attr('href');
-        $('.tpl_headings_holder a').removeClass('active');
-        $('.tpl_body_holder .tpl_body').removeClass('active');
-        $(this).addClass('active');
-        $('.tpl_body_holder ' + tab).addClass('active');
-    });
-$('.cell_tpl h2 .btn_edit').on('click', function(e){
-       e.preventDefault();
-        $('.tpl_headings_holder a').removeClass('active');
-        $('.tpl_body_holder .tpl_body').removeClass('active');
-        $('.tpl_head_main').addClass('active');
-        $('#tpl_tab_main').addClass('active');
-    });
-    // full screen
-   $('.btn_screen_full ').click(function () {
-    $('#tpl_tab_pug').fullscreen();
-    return false;
-});
-
-$('.btn_screen_full_exit').click(function () {
-    $.fullscreen.exit();
-    return false;
-
-});
-$(document).bind('fscreenchange', function (e, state, elem) {
-    if ($.fullscreen.isFullScreen()) {
-        $('#tpl_tab_pug').addClass('tpl_fullscreen');
-    } else {
-        $('#tpl_tab_pug').removeClass('tpl_fullscreen');
-    }
-    
-});
-}
-        })
-
-        Vue.component('legal-template-variables-component', {
-		  data:function(){
-                return{
-		            "isActive": null
-                    }
-                },
-            props:{
-                legalTemplate:Object,
-                legalTemplateDescription:Object
-            },
-            template:'<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" ><div class="tpl_chan_heading" @click="showAdvanced(index)"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;" class="field_radiobuttons"><input type="radio" v-bind:id="legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]"><label v-bind:for="legalTemplateDescription.radioTrue + variable.id">True</label><input type="radio" v-bind:id="legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]"><label v-bind:for="legalTemplateDescription.radioFalse + variable.id">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
-            methods:{
-		     showAdvanced: function(index) {
-            this.isActive = this.isActive === index ? null : index
+<script type="text/javascript">
+    Vue.component('legal-templates-list-component', {
+        props: {
+            legalTemplates: Array,
+            legalTemplate: Object,
+            tags: Array
         },
-                createLegalTemplateVariable: function(){
-                    this.legalTemplate.variables.push({
-                        "id":uuid(),
-                        "name":prompt('Введіть назву змінної', ''),
-                        "description":"",
-                        "type":"string",
-                        "testValue":"",
-                        "defaultValue":"",
-                        "currentValue":"",
-                        "required":true
-                    })
-                },
-		    
-                saveLegalTemplate: function(index){
-                    this.$emit("emit-save-legal-template")
-                }		
+        data: function () {
+            return {
+                curIndex: 0,
+                bntStyleNormal: {'background-color': 'red'},
+                bntStyleChanged: {'background-color': 'red'},
+                userTag: ''
             }
-        });
+        },
+        template: '<div class="cell cell_tpls"><button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button><h2>Перелік шаблонів<button @click="createLegalTemplate()" class="btn_create" title="Створити новий шаблон"><i class="fas fa-plus"></i></button><button @click="saveLegalTemplates()" class="btn_save_all" title="Зберегти всі шаблони"><i class="fas fa-save"></i></button></h2><ul class="list_tpl">             <li v-for="(oneTemplate, index) in legalTemplates"><button @click="openLegalTemplate(index)" class="btn_tpl_name" title="Редагувати шаблон">{{ oneTemplate.title }}</button><button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button></li></ul><div class="tpl_tags_wrap"><div class="field"><input type="text" v-model="userTag" placeholder="Шукати тег"></div><div class="tpl_tags_list"><button v-for="(tag, index) in tags" @click="searchByTag(tag)" class="tpl_tag_single">{{ tag }}</button></div></div></div>',
 
-        var vmMain = new Vue({
-            el:'#app',
-            data:{
-                prefix:"",
-                legalTemplate:{},
-                legalTemplateDescription:{
-                    "id":"ID",
-                    "title":"Назва шаблону",
-                    "type":"Тип шаблону",
-                    "pug":"PUG код шаблону",
-		"radioTrue":"radioTrue",
-		"radioFalse":"radioFalse",
-                    "variables":{
-                        "id":"Унікальний ідентифікатор змінної",
-                        "name":"Ім'я змінної",
-                        "description":"Опис змінної",
-                        "type":"Тип змінної",
-                        "testValue":"Значення для тестування",
-                        "defaultValue":"Значення за замовчуванням",
-                        "currentValue":"Значення в даний момент",
-                        "required":"Обов'язковість змінної"
-                    },
+        methods: {
+            openLegalTemplate: function (index) {
+                this.$emit("update:legalTemplate", this.legalTemplates[index]);
+                this.curIndex = index;
+                console.log(this.curIndex, this.legalTemplate);
+            },
+            createLegalTemplate: function () {
+                this.$emit("emit-create-legal-template")
+            },
+            saveLegalTemplates: function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", (prefix + 'api/update'));
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.send(JSON.stringify(this.legalTemplates));
+                console.log(this.legalTemplates)
+            },
+            saveLegalTemplate: function (index) {
+                this.$emit("emit-save-legal-template")
+            },
+            searchByUserTag: function (userTag) {
+                this.$emit("emit-search-by-user-tag", this.userTag)
+            },
+            searchByTag: function (tag) {
+                console.log(tag);
+                this.$emit("emit-search-by-tag", tag);
+            },
+        },
+        watch: {
+            userTag: {
+                handler(newUserTag) {
+                    this.tags = this.tags.find(function (tagInTags) {
+                        return tagInTags.includes(newUserTag)
+                    })
+                }
+            }
+        },
+        mounted: function () {
+
+            // collapse sidebar
+            $('.btn_collapse').on('click', function () {
+                $('#app').toggleClass('app_collapsed');
+            });
+
+        }
+
+    })
+
+    Vue.component('legal-template-component', {
+        data: function () {
+            return {
+                newTag: ""
+            }
+        },
+        props: {
+            legalTemplate: Object,
+            legalTemplates: Array,
+            legalTemplateDescription: Object,
+            changed: Boolean
+        },
+        watch: {
+            legalTemplate: {
+                handler(newT, oldT) {
+                    if (oldT.id && newT.id == oldT.id) { //real edit
+                        if (!newT.changed) {
+                            newT.changed = true;
+                            console.log("Changed !", JSON.stringify(oldT), JSON.stringify(newT));
+                            this.$emit("update:changed", true);
+                            this.$emit("update:legalTemplates", this.legalTemplates);
+                        }
+                    } else {
+                        console.log("Template SELECTED");
+                    }
                 },
-                // currentIndex:null,
-                legalTemplates:[],
-                tags:['1Tag1','1Tag2','2Tag1','2Tag2','3Tag1','3Tag2'],
-		            "isActive": null
+                deep: true
+            }
+        },
 
+        template: '<div class="cell cell_tpl"><div class="tpl_heading"><h2>Шаблон {{legalTemplate.title}}<span>{{legalTemplate.type}}</span><button class="btn_edit" title="Редагувати"><i class="fas fa-pen"></i></button><button class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button></h2><ul><li>Теги:</li>                   <li v-for="(tag, tagIndex) in legalTemplate.tags">                        <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button></li></ul> </div><div class="tpl_headings_holder"><a href="#tpl_tab_pug" class="active">Редагування PUG</a><a href="#tpl_tab_preview">Попередній перегляд</a><a href="#tpl_tab_main" class="tpl_head_main">Основні значення</a></div><div class="tpl_body_holder">        <div class="tpl_body" id="tpl_tab_main"><span class="tpl_id">{{  legalTemplateDescription.id  }}:  {{  legalTemplate.id  }}</span><div class="tpl_name_type">                <div class="field"><label>{{ legalTemplateDescription.title }}:</label><input type="text"                                                                                              v-model="legalTemplate.title">                </div>                <div class="field tpl_dd_holder"><label>{{ legalTemplateDescription.type }}:</label><div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div><select v-model="legalTemplate.type"> <option>full</option> <option>header</option> <option>footer</option> </select>                </div>            </div>            <div class="tpl_tag_field">                <div class="field"><label>Додати тег:</label><input type="text" v-model="newTag">                    <button @click="addTemplateTag" title="Додати тег"><i class="fas fa-plus"></i></button>                </div>            </div>            <div class="tpl_tags">                <ul>                    <li v-for="(tag, tagIndex) in legalTemplate.tags">                        <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}                        </button>                        <button @click="deleteTag(tagIndex)" title="Видалити тег" class="tpl_tag_delete"><i class="fas fa-trash-alt"></i></button>                    </li>                </ul>            </div>        </div>        <div class="tpl_body active" id="tpl_tab_pug">            <div class="tpl_pug">                <div class="field">                    <div class="tpl_extras">              <button class="btn_screen_full_exit" title="Закрити весь екран"><i class="fas fa-compress-arrows-alt"></i></button>          <button class="btn_screen_full" title="Відкрити весь екран"><i                                class="fas fa-expand-arrows-alt"></i>                        </button>                        <button class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>                    </div>                    <label>{{ legalTemplateDescription.pug }}:</label><textarea v-model="legalTemplate.pug"></textarea>                </div>            </div>        </div>    </div></div>',
+        methods: {
+            addTemplateTag: function () {
+                this.legalTemplate.tags.push(this.newTag);
+                this.newTag = "";
+            },
+            searchByTag: function (tag) {
+                console.log(tag);
+                this.$emit("emit-search-by-tag", tag);
+            },
+            deleteTag: function (tagIndex) {
+                this.legalTemplate.tags.splice(tagIndex, 1)
+            }
+        },
+        mounted: function () {
+            // tabs
+            $('.tpl_headings_holder a').on('click', function (e) {
+                e.preventDefault();
+                var tab = $(this).attr('href');
+                $('.tpl_headings_holder a').removeClass('active');
+                $('.tpl_body_holder .tpl_body').removeClass('active');
+                $(this).addClass('active');
+                $('.tpl_body_holder ' + tab).addClass('active');
+            });
+            $('.cell_tpl h2 .btn_edit').on('click', function (e) {
+                e.preventDefault();
+                $('.tpl_headings_holder a').removeClass('active');
+                $('.tpl_body_holder .tpl_body').removeClass('active');
+                $('.tpl_head_main').addClass('active');
+                $('#tpl_tab_main').addClass('active');
+            });
+            // full screen
+            $('.btn_screen_full ').click(function () {
+                $('#tpl_tab_pug').fullscreen();
+                return false;
+            });
+
+            $('.btn_screen_full_exit').click(function () {
+                $.fullscreen.exit();
+                return false;
+
+            });
+            $(document).bind('fscreenchange', function (e, state, elem) {
+                if ($.fullscreen.isFullScreen()) {
+                    $('#tpl_tab_pug').addClass('tpl_fullscreen');
+                } else {
+                    $('#tpl_tab_pug').removeClass('tpl_fullscreen');
+                }
+
+            });
+        }
+    })
+
+    Vue.component('legal-template-variables-component', {
+        data: function () {
+            return {
+                "isActive": null
+            }
+        },
+        props: {
+            legalTemplate: Object,
+            legalTemplateDescription: Object
+        },
+        template: '<div class="cell"><h2>Задавання змінних <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button></h2><ul class="tpl_chan"><li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" ><div class="tpl_chan_heading" @click="showAdvanced(index)"> <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button></h4><h6><i class="fas fa-align-left"></i><span>{{ variable.description }}</span></h6><h6><i class="fas fa-code"></i><span>{{ variable.testValue }}</span></h6></div><div class="tpl_chan_body"><div class="field" v-for="(value, name) in variable"><label>{{ legalTemplateDescription.variables[name] }}</label><div v-if="name===&quot;required&quot;" class="field_radiobuttons"><input type="radio" v-bind:id="legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]"><label v-bind:for="legalTemplateDescription.radioTrue + variable.id">True</label><input type="radio" v-bind:id="legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]"><label v-bind:for="legalTemplateDescription.radioFalse + variable.id">False</label> </div><div v-else> <input type="text" v-model="legalTemplate.variables[index][name]"></div></div> </div></li></ul></div>',
+        methods: {
+            showAdvanced: function (index) {
+                this.isActive = this.isActive === index ? null : index
+            },
+            createLegalTemplateVariable: function () {
+                this.legalTemplate.variables.push({
+                    "id": uuid(),
+                    "name": prompt('Введіть назву змінної', ''),
+                    "description": "",
+                    "type": "string",
+                    "testValue": "",
+                    "defaultValue": "",
+                    "currentValue": "",
+                    "required": true
+                })
             },
 
-            created: function(){
-                var xhr= new XMLHttpRequest();
-                xhr.open('GET', (prefix+'api/read'))
+            saveLegalTemplate: function (index) {
+                this.$emit("emit-save-legal-template")
+            }
+        }
+    });
+
+    var vmMain = new Vue({
+        el: '#app',
+        data: {
+            prefix: "",
+            legalTemplate: {},
+            legalTemplateDescription: {
+                "id": "ID",
+                "title": "Назва шаблону",
+                "type": "Тип шаблону",
+                "pug": "PUG код шаблону",
+                "radioTrue": "radioTrue",
+                "radioFalse": "radioFalse",
+                "variables": {
+                    "id": "Унікальний ідентифікатор змінної",
+                    "name": "Ім'я змінної",
+                    "description": "Опис змінної",
+                    "type": "Тип змінної",
+                    "testValue": "Значення для тестування",
+                    "defaultValue": "Значення за замовчуванням",
+                    "currentValue": "Значення в даний момент",
+                    "required": "Обов'язковість змінної"
+                },
+            },
+            // currentIndex:null,
+            legalTemplates: [],
+            tags: ['1Tag1', '1Tag2', '2Tag1', '2Tag2', '3Tag1', '3Tag2'],
+            "isActive": null
+
+        },
+
+        created: function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', (prefix + 'api/read'))
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState != 4) return;
+                if (xhr.status != 200) {
+                    alert(xhr.status + ': ' + xhr.statusText);
+                } else {
+                    this.legalTemplates = JSON.parse(xhr.responseText);
+                }
+            }.bind(this)
+        },
+
+        methods: {
+            showAdvanced: function (index) {
+                this.isActive = this.isActive === index ? null : index
+            },
+            rootCreateLegalTemplate: function () {
+                this.legalTemplates.push({
+                    "id": uuid(),
+                    "description": "",
+                    "title": '',
+                    "type": "",
+                    "pug": "",
+                    "radioTrue": "",
+                    "radioFalse": "",
+                    "variables": [],
+                    "tags": []
+                });
+                this.legalTemplate = this.legalTemplates[(this.legalTemplates.length - 1)]
+            },
+            rootSaveLegalTemplate: function (index) {
+                delete this.legalTemplate.changed
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", (prefix + 'api/update'));
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.send('[' + JSON.stringify(this.legalTemplate) + ']');
+            },
+            rootSearchByTag: function (tag) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', (prefix + 'api/read?tag=' + tag))
                 xhr.send();
-                xhr.onreadystatechange = function() {
+                xhr.onreadystatechange = function () {
                     if (xhr.readyState != 4) return;
                     if (xhr.status != 200) {
                         alert(xhr.status + ': ' + xhr.statusText);
@@ -270,53 +324,14 @@ $(document).bind('fscreenchange', function (e, state, elem) {
                         this.legalTemplates = JSON.parse(xhr.responseText);
                     }
                 }.bind(this)
-            },
-            
-            methods:{
-		     showAdvanced: function(index) {
-            this.isActive = this.isActive === index ? null : index
-        },
-                rootCreateLegalTemplate: function() {
-                    this.legalTemplates.push({
-                        "id":uuid(),
-                        "description":"",
-                        "title":'',
-                        "type":"",
-                        "pug":"",
-			"radioTrue":"",
-			"radioFalse":"",
-                        "variables":[],
-                        "tags":[]
-                    });
-                    this.legalTemplate=this.legalTemplates[(this.legalTemplates.length-1)]
-                },
-                rootSaveLegalTemplate: function(index) {
-                        delete this.legalTemplate.changed
-                        var xhr= new XMLHttpRequest();
-                        xhr.open("PUT", (prefix+'api/update'));
-                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                        xhr.send('['+JSON.stringify(this.legalTemplate)+']');
-                    },
-                rootSearchByTag: function(tag){
-                    var xhr= new XMLHttpRequest();
-                    xhr.open('GET', (prefix+'api/read?tag='+tag))
-                    xhr.send();
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState != 4) return;
-                        if (xhr.status != 200) {
-                            alert(xhr.status + ': ' + xhr.statusText);
-                        } else {
-                            this.legalTemplates = JSON.parse(xhr.responseText);
-                        }
-                    }.bind(this)
-                }
-            },
-            computed:{
-                stringifiedAll: function() {
-                    return JSON.stringify(this.legalTemplates);
-                }
             }
-        })
-    </script>
+        },
+        computed: {
+            stringifiedAll: function () {
+                return JSON.stringify(this.legalTemplates);
+            }
+        }
+    })
+</script>
 </body>
 </html>
