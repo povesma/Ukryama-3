@@ -8,18 +8,29 @@
       }
       let host = "https://raw.githubusercontent.com/povesma/Ukryama-3/testing/html/templates";
       
-      var link = document.createElement('link');  
-      link.rel = "stylesheet";  
-      link.type - "text/css";
-      link.href = host+'/css/style.css';
-      document.head.appendChild(link);
-      //document.write(`
-        //<link rel="stylesheet" type="text/css" href="` + host + `/css/style.css" />
-        //<link href="` + host + `/fontawesome/css/all.css" rel="stylesheet" />    
-        //\x3Cscript src="` + host + `/js/jquery.fullscreen.min.js">\x3C/script>
-        //\x3Cscript src="` + host + `/fontawesome/js/all.js">\x3C/script>
-        //\x3Cscript src="` + host + `/js/jquery-3.4.0.min.js">\x3C/script>
-      //`);
+      var stylecss = document.createElement('link');  
+      stylecss.rel = "stylesheet";  
+      stylecss.type - "text/css";
+      stylecss.href = host+'/css/style.css';
+      document.head.appendChild(stylecss);
+      
+      var stylecss = document.createElement('link');  
+      stylecss.rel = "stylesheet";  
+      //stylecss.type - "text/css";
+      stylecss.href = host+'/fontawesome/css/all.css';
+      
+      var jqueryFullscreenMinJs = document.createElement('script');  
+      jqueryFullscreenMinJs.src = host + "/js/jquery.fullscreen.min.js";  
+      document.head.appendChild(jqueryFullscreenMinJs);
+      
+      var allJs = document.createElement('script');  
+      allJs.src = host + "/fontawesome/js/all.js";  
+      document.head.appendChild(allJs);
+      
+      var minJs = document.createElement('script');  
+      minJs.src = host + "/js/jquery-3.4.0.min.js";  
+      document.head.appendChild(minJs);
+      
     </script>
 
     <script
