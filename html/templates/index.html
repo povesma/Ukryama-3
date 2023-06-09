@@ -130,7 +130,12 @@
           formedDocument: String,
         },
         template:
-          '<div class="formedDocumentContainer"><div v-html="this.formedDocument"></div><button @click="showHideDocument">Close</button></div>',
+          `
+          <div class="formedDocumentContainer">
+              <div v-html="this.formedDocument"></div>
+              <button @click="showHideDocument">Close</button>
+          </div>
+          `,
         methods: {
           showHideDocument: function () {
             this.$emit("emit-show-hide-document");
@@ -153,7 +158,27 @@
           };
         },
         template:
-          '<div class="cell cell_tpls">  <button class="btn_collapse" title="Згорнути">    <i class="fas fa-angle-double-left"></i>  </button>  <h2>    Перелік шаблонів<button      @click="createLegalTemplate()"      class="btn_create"      title="Створити новий шаблон"    >      <i class="fas fa-plus"></i></button    ><button      @click="saveLegalTemplates()"      class="btn_save_all"      title="Зберегти всі шаблони"    >      <i class="fas fa-save"></i>    </button>  </h2>  <ul class="list_tpl">    <li v-for="(oneTemplate, index) in legalTemplates">      <button        @click="openLegalTemplate(index)"        class="btn_tpl_name"        title="Редагувати шаблон"      >        {{ oneTemplate.title }}</button      ><button @click="saveLegalTemplate" class="btn_save" title="Зберегти">        <i class="fas fa-save"></i>      </button>    </li>  </ul>  <div class="tpl_tags_wrap">    <div class="field">      <input type="text" v-model="userTag" placeholder="Шукати тег" />    </div>    <div class="tpl_tags_list">      <button        v-for="(tag, index) in tags"        @click="searchByTag(tag)"        class="tpl_tag_single"      >        {{ tag }}      </button>      <button type="button" class="btn btn-danger" v-if="displayClearFilters" @click="readAll">Скинути всі фільтри</button>    </div>  </div>  <button type="button" class="btn btn-danger" @click="rootLogoutRequest">    Logout  </button></div>',
+          `
+          <div class="cell cell_tpls">
+              <button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button>
+              <h2>
+                  Перелік шаблонів<button @click="createLegalTemplate()" class="btn_create" title="Створити новий шаблон"><i class="fas fa-plus"></i></button>
+                  <button @click="saveLegalTemplates()" class="btn_save_all" title="Зберегти всі шаблони"><i class="fas fa-save"></i></button>
+              </h2>
+              <ul class="list_tpl">
+                  <li v-for="(oneTemplate, index) in legalTemplates">
+                      <button @click="openLegalTemplate(index)" class="btn_tpl_name" title="Редагувати шаблон">{{ oneTemplate.title }}</button><button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>
+                  </li>
+              </ul>
+              <div class="tpl_tags_wrap">
+                  <div class="field"><input type="text" v-model="userTag" placeholder="Шукати тег" /></div>
+                  <div class="tpl_tags_list">
+                      <button v-for="(tag, index) in tags" @click="searchByTag(tag)" class="tpl_tag_single">{{ tag }}</button> <button type="button" class="btn btn-danger" v-if="displayClearFilters" @click="readAll">Скинути всі фільтри</button>
+                  </div>
+              </div>
+              <button type="button" class="btn btn-danger" @click="rootLogoutRequest">Logout</button>
+          </div>
+          `,
 
         methods: {
           readAll: function () {
@@ -239,7 +264,129 @@
         },
 
         template:
-          '<div class="cell cell_tpl">   <div class="tpl_heading">      <h2>Шаблон {{legalTemplate.title}}<span>{{legalTemplate.type}}</span>        <button class="btn_edit" title="Редагувати"><i class="fas fa-pen"></i></button>        <button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>    </h2>      <ul>         <li>Теги:</li>         <li v-for="(tag, tagIndex) in legalTemplate.tags">             <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button>        </li>      </ul>   </div>   <div class="tpl_headings_holder">       <a href="#tpl_tab_pug" class="active">Редагування PUG</a>       <a href="#tpl_tab_preview">Попередній перегляд</a>       <a href="#tpl_tab_main" class="tpl_head_main">Основні значення</a></div>   <div class="tpl_body_holder">      <div class="tpl_body" id="tpl_tab_main">         <span class="tpl_id">{{  legalTemplateDescription.id  }}:  {{  legalTemplate.id  }}</span>                                    <div class="tpl_name_type">            <div class="field">                <label>{{ legalTemplateDescription.title }}:</label>                <input type="text" v-model="legalTemplate.title">            </div>            <div class="field">                <label>{{ legalTemplateDescription.description }}:</label>                <input type="text" v-model="legalTemplate.description">            </div>            <div class="field tpl_dd_holder">               <label>{{ legalTemplateDescription.type }}:</label>                                                            <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>               <select v-model="legalTemplate.type">                  <option>full</option>                  <option>header</option>                  <option>body</option>                  <option>footer</option>                  <option>applications</option>               </select>            </div>            <div class="field tpl_dd_holder">               <label>{{ legalTemplateDescription.action_type }}:</label>                                                             <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>               <select v-model="legalTemplate.action_type">                  <option>SendUPPDoc</option>                  <option>SendLastAuthorityDocument</option>                  <option>SendDPPDoc</option>                  <option>SendFirstClaim</option>                  <option>Another</option>               </select>            </div>         </div>         <div class="tpl_body_holder" v-if="legalTemplate.type===&quot;body&quot;">               <div class="field tpl_dd_holder">                  <label>{{ legalTemplateDescription.header }}:</label>                                                                <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>                  <select v-model="legalTemplate.header">                     <option v-for="header in headers" :value="header.id"> {{ header.description}} </option>                  </select>               </div>               <div class="field tpl_dd_holder">                  <label>{{ legalTemplateDescription.footer }}:</label>                                                                <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>                  <select v-model="legalTemplate.footer">                     <option v-for="footer in footers" :value="footer.id"> {{ footer.description}} </option>                  </select>               </div>               <div class="field tpl_dd_holder">                  <label>{{ legalTemplateDescription.application }}:</label>                                                                <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>                  <select v-model="legalTemplate.application">                     <option v-for="application in applications" :value="application.id"> {{ application.description}} </option>                  </select>               </div>            </div>         <div class="tpl_tag_field">            <div class="field"><label>Додати тег:</label><input type="text" v-model="newTag">                <button @click="addTemplateTag" title="Додати тег">                    <i class="fas fa-plus"></i>                </button>            </div>         </div>         <div class="tpl_tags">            <ul>               <li v-for="(tag, tagIndex) in legalTemplate.tags">                   <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button>                   <button @click="deleteTag(tagIndex)" title="Видалити тег" class="tpl_tag_delete"><i class="fas fa-trash-alt"></i></button>                </li>            </ul>         </div>         <div class="tpl_expectations" style="border:2px solid black">            <label>{{ legalTemplateDescription.expectations }}:</label>                                                 <ul>               <li v-for="(expectation, expectationIndex) in legalTemplate.expectations">                    <span>> {{ expectationsDict[expectation] }} </span><button @click="deleteExpectation(expectationIndex)">Видалити</button>                </li>            </ul>            <form v-if="!newExpectationActive">               <label>Додати очікування:</label>                                                             <select v-model="newExpectation" style="width:max-content">                  <option v-for="expectation in expectations" :value="expectation.name">{{ expectation.displayName }}</option>                  <option value="newExpectation">Нове очікування</option>               </select>            </form>            <form v-else>               <p>                    <label>Введіть назву очікування</label>                    <input required type="text" v-model="createdExpectation.name">                </p>               <p>                    <label>Введіть короткий опис</label>                    <input required type="text" v-model="createdExpectation.displayName">                </p>               <p>                    <label>Введіть повний опис</label>                    <input required type="text" v-model="createdExpectation.description">                </p>            </form>            <button v-if="newExpectationActive" @click="hideNewExpectation">Назад</button>            <button @click="addTemplateExpectation" title="Додати очікування">                <i class="fas fa-plus"></i>            </button>                                    </div>         <div class="tpl_intents" style="border:2px solid black">            <label>{{ legalTemplateDescription.intents }}:</label>                                                <ul>               <li v-for="(intent, intentIndex) in legalTemplate.intents">                    <span>> {{ expectationsDict[intent] }} </span><button @click="deleteIntent(intentIndex)">Видалити</button>                </li>            </ul>            <label>Додати причину:</label>                                                <select v-model="newIntent" style="width:max-content">               <option v-for="expectation in expectations" :value="expectation.name">{{ expectation.displayName }}</option>            </select>            <button @click="addTemplateIntent" title="Додати причину">                <i class="fas fa-plus"></i>            </button>                                   </div>      </div>      <div class="tpl_body active" id="tpl_tab_pug">         <div class="tpl_pug">            <div class="field">               <div class="tpl_extras">                   <button class="btn_screen_full_exit" title="Закрити весь екран"><i class="fas fa-compress-arrows-alt"></i></button>                   <button>Перемістити у смітник</button><button class="btn_screen_full" title="Відкрити весь екран"><i class="fas fa-expand-arrows-alt"></i></button>                   <button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>                </div>               <label>{{ legalTemplateDescription.pug }}:</label>                                                            <textarea v-model="legalTemplate.pug"></textarea>            </div>         </div>      </div>   </div></div>',
+          `
+          <div class="cell cell_tpl">
+              <div class="tpl_heading">
+                  <h2>
+                      Шаблон {{legalTemplate.title}}<span>{{legalTemplate.type}}</span> <button class="btn_edit" title="Редагувати"><i class="fas fa-pen"></i></button>
+                      <button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>
+                  </h2>
+                  <ul>
+                      <li>Теги:</li>
+                      <li v-for="(tag, tagIndex) in legalTemplate.tags"><button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button></li>
+                  </ul>
+              </div>
+              <div class="tpl_headings_holder"><a href="#tpl_tab_pug" class="active">Редагування PUG</a> <a href="#tpl_tab_preview">Попередній перегляд</a> <a href="#tpl_tab_main" class="tpl_head_main">Основні значення</a></div>
+              <div class="tpl_body_holder">
+                  <div class="tpl_body" id="tpl_tab_main">
+                      <span class="tpl_id">{{ legalTemplateDescription.id }}: {{ legalTemplate.id }}</span>
+                      <div class="tpl_name_type">
+                          <div class="field"><label>{{ legalTemplateDescription.title }}:</label> <input type="text" v-model="legalTemplate.title" /></div>
+                          <div class="field"><label>{{ legalTemplateDescription.description }}:</label> <input type="text" v-model="legalTemplate.description" /></div>
+                          <div class="field tpl_dd_holder">
+                              <label>{{ legalTemplateDescription.type }}:</label>
+                              <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>
+                              <select v-model="legalTemplate.type">
+                                  <option>full</option>
+                                  <option>header</option>
+                                  <option>body</option>
+                                  <option>footer</option>
+                                  <option>applications</option>
+                              </select>
+                          </div>
+                          <div class="field tpl_dd_holder">
+                              <label>{{ legalTemplateDescription.action_type }}:</label>
+                              <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>
+                              <select v-model="legalTemplate.action_type">
+                                  <option>SendUPPDoc</option>
+                                  <option>SendLastAuthorityDocument</option>
+                                  <option>SendDPPDoc</option>
+                                  <option>SendFirstClaim</option>
+                                  <option>Another</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="tpl_body_holder" v-if='legalTemplate.type==="body"'>
+                          <div class="field tpl_dd_holder">
+                              <label>{{ legalTemplateDescription.header }}:</label>
+                              <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>
+                              <select v-model="legalTemplate.header">
+                                  <option v-for="header in headers" :value="header.id"> {{ header.description}} </option>
+                              </select>
+                          </div>
+                          <div class="field tpl_dd_holder">
+                              <label>{{ legalTemplateDescription.footer }}:</label>
+                              <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>
+                              <select v-model="legalTemplate.footer">
+                                  <option v-for="footer in footers" :value="footer.id"> {{ footer.description}} </option>
+                              </select>
+                          </div>
+                          <div class="field tpl_dd_holder">
+                              <label>{{ legalTemplateDescription.application }}:</label>
+                              <div class="tpl_dd_button"><i class="fas fa-chevron-down"></i></div>
+                              <select v-model="legalTemplate.application">
+                                  <option v-for="application in applications" :value="application.id"> {{ application.description}} </option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="tpl_tag_field">
+                          <div class="field">
+                              <label>Додати тег:</label><input type="text" v-model="newTag" /> <button @click="addTemplateTag" title="Додати тег"><i class="fas fa-plus"></i></button>
+                          </div>
+                      </div>
+                      <div class="tpl_tags">
+                          <ul>
+                              <li v-for="(tag, tagIndex) in legalTemplate.tags">
+                                  <button @click="searchByTag(tag)" title="Шукати за тегом" class="tpl_tag_single">{{ tag }}</button>
+                                  <button @click="deleteTag(tagIndex)" title="Видалити тег" class="tpl_tag_delete"><i class="fas fa-trash-alt"></i></button>
+                              </li>
+                          </ul>
+                      </div>
+                      <div class="tpl_expectations" style="border: 2px solid black;">
+                          <label>{{ legalTemplateDescription.expectations }}:</label>
+                          <ul>
+                              <li v-for="(expectation, expectationIndex) in legalTemplate.expectations"><span>> {{ expectationsDict[expectation] }} </span><button @click="deleteExpectation(expectationIndex)">Видалити</button></li>
+                          </ul>
+                          <form v-if="!newExpectationActive">
+                              <label>Додати очікування:</label>
+                              <select v-model="newExpectation" style="width: max-content;">
+                                  <option v-for="expectation in expectations" :value="expectation.name">{{ expectation.displayName }}</option>
+                                  <option value="newExpectation">Нове очікування</option>
+                              </select>
+                          </form>
+                          <form v-else>
+                              <p><label>Введіть назву очікування</label> <input required type="text" v-model="createdExpectation.name" /></p>
+                              <p><label>Введіть короткий опис</label> <input required type="text" v-model="createdExpectation.displayName" /></p>
+                              <p><label>Введіть повний опис</label> <input required type="text" v-model="createdExpectation.description" /></p>
+                          </form>
+                          <button v-if="newExpectationActive" @click="hideNewExpectation">Назад</button> <button @click="addTemplateExpectation" title="Додати очікування"><i class="fas fa-plus"></i></button>
+                      </div>
+                      <div class="tpl_intents" style="border: 2px solid black;">
+                          <label>{{ legalTemplateDescription.intents }}:</label>
+                          <ul>
+                              <li v-for="(intent, intentIndex) in legalTemplate.intents"><span>> {{ expectationsDict[intent] }} </span><button @click="deleteIntent(intentIndex)">Видалити</button></li>
+                          </ul>
+                          <label>Додати причину:</label>
+                          <select v-model="newIntent" style="width: max-content;">
+                              <option v-for="expectation in expectations" :value="expectation.name">{{ expectation.displayName }}</option>
+                          </select>
+                          <button @click="addTemplateIntent" title="Додати причину"><i class="fas fa-plus"></i></button>
+                      </div>
+                  </div>
+                  <div class="tpl_body active" id="tpl_tab_pug">
+                      <div class="tpl_pug">
+                          <div class="field">
+                              <div class="tpl_extras">
+                                  <button class="btn_screen_full_exit" title="Закрити весь екран"><i class="fas fa-compress-arrows-alt"></i></button> <button>Перемістити у смітник</button>
+                                  <button class="btn_screen_full" title="Відкрити весь екран"><i class="fas fa-expand-arrows-alt"></i></button> <button @click="saveLegalTemplate" class="btn_save" title="Зберегти"><i class="fas fa-save"></i></button>
+                              </div>
+                              <label>{{ legalTemplateDescription.pug }}:</label> <textarea v-model="legalTemplate.pug"></textarea>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          `,
         methods: {
           addTemplateTag: function () {
             this.legalTemplate.tags.push(this.newTag);
@@ -361,49 +508,50 @@
         },
         template:
           '<div class="cell">\
-                    <h2>Задавання змінних\
-                        <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button> \
-                    </h2>\
-                    <button @click="updateVariables">Оновити змінні</button>\
-                    <ul class="tpl_chan">\
-                        <li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" >\
-                            <div class="tpl_chan_heading" @click="showAdvanced(index)"> \
-                                <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button>\
-                                </h4>\
-                                <h6>\
-                                    <i class="fas fa-align-left"></i><span>{{ variable.description }}</span>\
-                                </h6>\
-                                <h6>\
-                                    <i class="fas fa-code"></i>\
-                                    <span>{{ variable.testValue }}</span>\
-                                </h6>\
-                            </div>\
-                            <div class="tpl_chan_body">\
-                                <div class="field" v-for="(value, name) in variable">\
-                                    <label>{{ legalTemplateDescription.variables[name] }}</label>\
-                                    <div v-if="name===&quot;required&quot;" class="field_radiobuttons">\
-                                        <input type="radio" v-bind:id="&quot;required_&quot; + legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]">\
-                                        <label v-bind:for="&quot;required_&quot; + legalTemplateDescription.radioTrue + variable.id">Так</label>\
-                                        <input type="radio" v-bind:id="&quot;required_&quot; + legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]">\
-                                        <label v-bind:for="&quot;required_&quot; + legalTemplateDescription.radioFalse + variable.id">Ні</label>\
-                                    </div>\
-                                    <div v-else-if="name===&quot;enabled&quot;" class="field_radiobuttons">\
-                                        <input type="radio" v-bind:id="&quot;enabled_&quot; + legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]">\
-                                        <label v-bind:for="&quot;enabled_&quot; + legalTemplateDescription.radioTrue + variable.id">Так</label>\
-                                        <input type="radio" v-bind:id="&quot;enabled_&quot; + legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]">\
-                                        <label v-bind:for="&quot;enabled_&quot; + legalTemplateDescription.radioFalse + variable.id">Ні</label>\
-                                    </div>\
-                                    <div v-else>\
-                                        <input type="text" v-model="legalTemplate.variables[index][name]">\
-                                    </div>\
+                <h2>Задавання змінних\
+                    <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button> \
+                </h2>\
+                <button @click="updateVariables">Оновити змінні</button>\
+                <ul class="tpl_chan">\
+                    <li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" >\
+                        <div class="tpl_chan_heading" @click="showAdvanced(index)"> \
+                            <h4>{{ variable.name }}<button class="tpl_chan_heading_collapse"><i class="fas fa-chevron-down"></i></button>\
+                            </h4>\
+                            <h6>\
+                                <i class="fas fa-align-left"></i><span>{{ variable.description }}</span>\
+                            </h6>\
+                            <h6>\
+                                <i class="fas fa-code"></i>\
+                                <span>{{ variable.testValue }}</span>\
+                            </h6>\
+                        </div>\
+                        <div class="tpl_chan_body">\
+                            <div class="field" v-for="(value, name) in variable">\
+                                <label>{{ legalTemplateDescription.variables[name] }}</label>\
+                                <div v-if="name===&quot;required&quot;" class="field_radiobuttons">\
+                                    <input type="radio" v-bind:id="&quot;required_&quot; + legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]">\
+                                    <label v-bind:for="&quot;required_&quot; + legalTemplateDescription.radioTrue + variable.id">Так</label>\
+                                    <input type="radio" v-bind:id="&quot;required_&quot; + legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]">\
+                                    <label v-bind:for="&quot;required_&quot; + legalTemplateDescription.radioFalse + variable.id">Ні</label>\
+                                </div>\
+                                <div v-else-if="name===&quot;enabled&quot;" class="field_radiobuttons">\
+                                    <input type="radio" v-bind:id="&quot;enabled_&quot; + legalTemplateDescription.radioTrue + variable.id" value=true v-model="legalTemplate.variables[index][name]">\
+                                    <label v-bind:for="&quot;enabled_&quot; + legalTemplateDescription.radioTrue + variable.id">Так</label>\
+                                    <input type="radio" v-bind:id="&quot;enabled_&quot; + legalTemplateDescription.radioFalse + variable.id" value=false v-model="legalTemplate.variables[index][name]">\
+                                    <label v-bind:for="&quot;enabled_&quot; + legalTemplateDescription.radioFalse + variable.id">Ні</label>\
+                                </div>\
+                                <div v-else>\
+                                    <input type="text" v-model="legalTemplate.variables[index][name]">\
                                 </div>\
                             </div>\
-                        </li>\
-                    </ul>\
-                    <button @click="formDocument">Сформувати документ</button>\
-                    <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
-                    <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
-                </div>',
+                        </div>\
+                    </li>\
+                </ul>\
+                <button @click="formDocument">Сформувати документ</button>\
+                <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
+                <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
+            </div>
+        ',
         methods: {
           showAdvanced: function (index) {
             this.isActive = this.isActive === index ? null : index;
