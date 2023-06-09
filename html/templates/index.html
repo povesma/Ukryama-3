@@ -507,7 +507,7 @@
           renderedVariables: Object,
         },
         template:
-          '<div class="cell">\
+          `<div class="cell">\
                 <h2>Задавання змінних\
                     <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button> \
                 </h2>\
@@ -551,7 +551,7 @@
                 <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
                 <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
             </div>
-        ',
+        `,
         methods: {
           showAdvanced: function (index) {
             this.isActive = this.isActive === index ? null : index;
