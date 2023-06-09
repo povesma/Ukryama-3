@@ -20,7 +20,7 @@ Vue.component("formed-document-component", {
     },
   },
 });
-Vue.component("legal-templates-list-component", legal - templates - list);
+Vue.component("legal-templates-list-component", legalTemplatesListComponent);
 
 Vue.component("legal-template-component", {
   data: function () {
@@ -381,7 +381,7 @@ Vue.component("legal-template-variables-component", {
       var parsedVariables = this.legalTemplate.pug.match(/#{\\S+}/g);
       let unique = new Set(parsedVariables);
       parsedVariables = Array.from(unique);
-      delete unique;
+      unique = undefined;
 
       parsedVariables = parsedVariables.map((item, i) => {
         return item.slice(2, -1);
