@@ -1,3 +1,9 @@
+
+<script>
+export default {
+
+template:
+`
 <template>
     <div class="cell cell_tpls">
         <button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button>
@@ -19,9 +25,7 @@
         <button type="button" class="btn btn-danger" @click="rootLogoutRequest">Logout</button>
     </div>
 </template>
-
-<script>
-export default {
+`,
 
 props: {
     legalTemplates: Array,
@@ -29,6 +33,8 @@ props: {
     tags: Array,
     displayClearFilters: Boolean,
 },
+
+
 data: function () {
     return {
     curIndex: 0,
