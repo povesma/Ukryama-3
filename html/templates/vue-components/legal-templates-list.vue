@@ -1,20 +1,10 @@
 
-props: {
-    legalTemplates: Array,
-    legalTemplate: Object,
-    tags: Array,
-    displayClearFilters: Boolean,
-},
-data: function () {
-    return {
-    curIndex: 0,
-    bntStyleNormal: { "background-color": "red" },
-    bntStyleChanged: { "background-color": "red" },
-    userTag: "",
-    };
-},
+<script>
+export default {
+
 template:
-    `
+`
+<template>
     <div class="cell cell_tpls">
         <button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button>
         <h2>
@@ -34,7 +24,25 @@ template:
         </div>
         <button type="button" class="btn btn-danger" @click="rootLogoutRequest">Logout</button>
     </div>
-    `,
+</template>
+`,
+
+props: {
+    legalTemplates: Array,
+    legalTemplate: Object,
+    tags: Array,
+    displayClearFilters: Boolean,
+},
+
+
+data: function () {
+    return {
+    curIndex: 0,
+    bntStyleNormal: { "background-color": "red" },
+    bntStyleChanged: { "background-color": "red" },
+    userTag: "",
+    };
+},
 
 methods: {
     readAll: function () {
@@ -79,4 +87,6 @@ mounted: function () {
     $(".btn_collapse").on("click", function () {
     $("#app").toggleClass("app_collapsed");
     });
-},
+}
+};
+</script>
