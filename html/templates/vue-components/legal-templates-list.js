@@ -1,19 +1,19 @@
-export default {props: {
+export default {
+  props: {
     legalTemplates: Array,
     legalTemplate: Object,
     tags: Array,
     displayClearFilters: Boolean,
-},
-data: function () {
+  },
+  data: function () {
     return {
-    curIndex: 0,
-    bntStyleNormal: { "background-color": "red" },
-    bntStyleChanged: { "background-color": "red" },
-    userTag: "",
+      curIndex: 0,
+      bntStyleNormal: { "background-color": "red" },
+      bntStyleChanged: { "background-color": "red" },
+      userTag: "",
     };
-},
-template:
-    `
+  },
+  template: `
     <div class="cell cell_tpls">
         <button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button>
         <h2>
@@ -35,47 +35,48 @@ template:
     </div>
     `,
 
-methods: {
+  methods: {
     readAll: function () {
-    this.$emit("emit-read-all");
+      this.$emit("emit-read-all");
     },
     openLegalTemplate: function (index) {
-    this.$emit("emit-get-template", this.legalTemplates[index].id);
-    this.$emit("update:legalTemplate", this.legalTemplates[index]);
-    this.curIndex = index;
-    this.$emit("emit-get-expectations");
+      this.$emit("emit-get-template", this.legalTemplates[index].id);
+      this.$emit("update:legalTemplate", this.legalTemplates[index]);
+      this.curIndex = index;
+      this.$emit("emit-get-expectations");
     },
     createLegalTemplate: function () {
-    this.$emit("emit-create-legal-template");
+      this.$emit("emit-create-legal-template");
     },
     saveLegalTemplates: function () {
-    this.$emit("emit-save-legal-template");
+      this.$emit("emit-save-legal-template");
     },
     saveLegalTemplate: function (index) {
-    this.$emit("emit-save-legal-template");
+      this.$emit("emit-save-legal-template");
     },
     searchByUserTag: function (userTag) {
-    this.$emit("emit-search-by-user-tag", this.userTag);
+      this.$emit("emit-search-by-user-tag", this.userTag);
     },
     searchByTag: function (tag) {
-    this.$emit("emit-search-by-tag", tag);
+      this.$emit("emit-search-by-tag", tag);
     },
     rootLogoutRequest: function () {
-    this.$emit("emit-root-logout-request");
+      this.$emit("emit-root-logout-request");
     },
-},
-watch: {
+  },
+  watch: {
     userTag: {
-    handler(newUserTag) {
+      handler(newUserTag) {
         this.tags = this.tags.find(function (tagInTags) {
-        return tagInTags.includes(newUserTag);
+          return tagInTags.includes(newUserTag);
         });
+      },
     },
-    },
-},
-mounted: function () {
+  },
+  mounted: function () {
     // collapse sidebar
     $(".btn_collapse").on("click", function () {
-    $("#app").toggleClass("app_collapsed");
+      $("#app").toggleClass("app_collapsed");
     });
-}}
+  },
+};
