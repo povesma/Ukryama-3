@@ -1,4 +1,4 @@
-import legalTemplatesListComponent from "./vue-components/legal-templates-list.vue";
+import legalTemplatesListComponent from "./vue-components/legal-templates-list.js";
 Vue.component("formed-document-component", {
   data: function () {
     return {
