@@ -1,4 +1,4 @@
-// import legalTemplatesListComponent from "./vue-components/legal-templates-list.vue";
+import legalTemplatesListComponent from "./vue-components/legal-templates-list.vue";
 Vue.component("formed-document-component", {
   data: function () {
     return {
@@ -21,20 +21,6 @@ Vue.component("formed-document-component", {
   },
 });
 Vue.component("legal-templates-list-component", {
-  props: {
-    legalTemplates: Array,
-    legalTemplate: Object,
-    tags: Array,
-    displayClearFilters: Boolean,
-  },
-  data: function () {
-    return {
-      curIndex: 0,
-      bntStyleNormal: { "background-color": "red" },
-      bntStyleChanged: { "background-color": "red" },
-      userTag: "",
-    };
-  },
   template: `
     <div class="cell cell_tpls">
         <button class="btn_collapse" title="Згорнути"><i class="fas fa-angle-double-left"></i></button>
@@ -56,7 +42,20 @@ Vue.component("legal-templates-list-component", {
         <button type="button" class="btn btn-danger" @click="rootLogoutRequest">Logout</button>
     </div>
     `,
-
+  props: {
+    legalTemplates: Array,
+    legalTemplate: Object,
+    tags: Array,
+    displayClearFilters: Boolean,
+  },
+  data: function () {
+    return {
+      curIndex: 0,
+      bntStyleNormal: { "background-color": "red" },
+      bntStyleChanged: { "background-color": "red" },
+      userTag: "",
+    };
+  },
   methods: {
     readAll: function () {
       this.$emit("emit-read-all");
