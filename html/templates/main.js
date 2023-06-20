@@ -150,8 +150,6 @@ var vmMain = new Vue({
         f(variables4fsm, sp, e.testValue);
       });
 
-      console.log(variables4fsm);
-
       var requestObj = {
         pug: pug,
         variables: variables4fsm,
