@@ -94,7 +94,7 @@ export default {
     },
 
     updateVariables: function () {
-      pug = this.legalTemplate.pug;
+      let pug = this.legalTemplate.pug;
       let parsedVariables = pug.match(/(?:!{([^}]+)}|#{([^}]+)})/g);
       let unique = new Set(parsedVariables);
       let varsWithAssociated = this.legalTemplate.variables;
