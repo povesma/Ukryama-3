@@ -4,6 +4,8 @@ export default {
       isActive: null,
       formedDocument: String,
       formedDocumentActive: Boolean,
+      varsWithAssociated: Array,
+      pug: String,
     };
   },
   props: {
@@ -17,7 +19,7 @@ export default {
                 <h2>Задавання змінних\
                     <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button> \
                 </h2>\
-                <button @click="updateVariables">Оновити змінні</button>\
+                <button @click="updateVariables">Підтягнути змінні</button>\
                 <ul class="tpl_chan">\
                     <li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" >\
                         <div class="tpl_chan_heading" @click="showAdvanced(index)"> \
@@ -92,8 +94,11 @@ export default {
     },
 
     updateVariables: function () {
-      var parsedVariables = this.legalTemplate.pug.match(/#{\\S+}/g);
+      pug = this.legalTemplate.pug;
+      let parsedVariables = pug.match(/(?:!{([^}]+)}|#{([^}]+)})/g);
       let unique = new Set(parsedVariables);
+      let varsWithAssociated = this.legalTemplate.variables;
+
       parsedVariables = Array.from(unique);
       unique = undefined;
 
@@ -101,17 +106,17 @@ export default {
         return item.slice(2, -1);
       });
 
-      function changes(old, n) {
-        oldArray = old.map((obj) => {
+      function changes(old, actual) {
+        varsWithAssociated = old.map((obj) => {
           return obj.name;
         });
 
         return [
-          oldArray.filter((e) => {
-            return !n.includes(e);
+          varsWithAssociated.filter((e) => {
+            return !actual.includes(e);
           }),
-          n.filter((e) => {
-            return !oldArray.includes(e);
+          actual.filter((e) => {
+            return !varsWithAssociated.includes(e);
           }),
         ];
       }
@@ -129,7 +134,7 @@ export default {
         var disappeared = [];
 
         result[0].forEach((e) => {
-          disappeared.push(oldArray.indexOf(e));
+          disappeared.push(varsWithAssociated.indexOf(e));
         });
         this.legalTemplate.variables.forEach((item, i) => {
           if (disappeared.includes(i)) {
