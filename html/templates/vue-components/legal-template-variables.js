@@ -121,7 +121,7 @@ export default {
         ];
       }
 
-      result = changes(this.legalTemplate.variables, parsedVariables);
+      let result = changes(this.legalTemplate.variables, parsedVariables);
       if (
         confirm(
           "Зникли: " +
