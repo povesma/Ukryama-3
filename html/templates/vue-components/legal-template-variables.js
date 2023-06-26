@@ -126,9 +126,9 @@ export default {
         confirm(
           "Зникли: " +
             result[0] +
-            "\\n\\nЗ'явились:" +
+            "\n\nЗ'явились:" +
             result[1] +
-            "\\nОновити змінні?"
+            "\nОновити змінні?"
         )
       ) {
         var disappeared = [];
