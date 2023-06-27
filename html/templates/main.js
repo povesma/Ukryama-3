@@ -104,6 +104,7 @@ var vmMain = new Vue({
       }.bind(this);
     },
     rootReadNotBodies: function () {
+      console.log("hi from readNotBodies");
       var xhr = new XMLHttpRequest();
       xhr.open(
         "GET",
