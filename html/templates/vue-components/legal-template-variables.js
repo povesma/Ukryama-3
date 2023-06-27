@@ -122,7 +122,7 @@ export default {
       }
 
       let result = changes(this.legalTemplate.variables, parsedVariables);
-      if (confirm("З'явились:" + result[1] + "\nОновити змінні?")) {
+      if (confirm("Знайдено:" + result[1] + "\nОновити змінні?")) {
         var disappeared = [];
 
         result[0].forEach((e) => {

@@ -77,6 +77,7 @@ var vmMain = new Vue({
         this.tags = [...new Set(this.tags)];
       }
     }.bind(this);
+    this.rootReadNotBodies();
   },
 
   methods: {
@@ -98,6 +99,27 @@ var vmMain = new Vue({
             }
           });
           this.tags = [...new Set(this.tags)];
+          this.displayClearFilters = false;
+        }
+      }.bind(this);
+    },
+    rootReadNotBodies: function () {
+      var xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        prefix + "api/templates?type=footer&type=header&type=applications"
+      );
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState != 4) return;
+        if (xhr.status != 200) {
+          alert(xhr.status + ": " + xhr.statusText);
+        } else {
+          this.legalTemplates = Object.assign(
+            {},
+            this.legalTemplates,
+            JSON.parse(xhr.responseText)
+          );
           this.displayClearFilters = false;
         }
       }.bind(this);
