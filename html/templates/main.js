@@ -116,11 +116,14 @@ var vmMain = new Vue({
         if (xhr.status != 200) {
           alert(xhr.status + ": " + xhr.statusText);
         } else {
-          this.legalTemplates = Object.assign(
-            {},
-            this.legalTemplates,
-            JSON.parse(xhr.responseText)
-          );
+          JSON.parse(xhr.responseText).forEach((elem, index) => {
+            this.legalTemplates[
+              this.legalTemplates.findIndex(
+                (template) => template.id === elem.id
+              )
+            ] = elem;
+          });
+
           this.displayClearFilters = false;
         }
       }.bind(this);
