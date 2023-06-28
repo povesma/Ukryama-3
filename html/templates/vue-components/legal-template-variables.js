@@ -55,7 +55,7 @@ export default {
                         </div>\
                     </li>\
                 </ul>\
-                <button @click="formDocument">Показати сформований документу</button>\
+                <button @click="formDocument">Показати сформований документ</button>\
                 <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
                 <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
             </div>
@@ -95,6 +95,18 @@ export default {
 
     updateVariables: function () {
       let pug = this.legalTemplate.pug;
+      let connectedTemplatesTitles = ["header", "footer", "application"];
+      let connectedTemplates = {};
+      connectedTemplatesTitles.forEach((elem) => {
+        template = this.legalTemplates.find((templ) => {
+          templ.id === this.legalTemplate[elem].pug;
+        });
+        connectedTemplates[elem] = {
+          pug: template.pug,
+          variables: template.variables,
+        };
+      });
+      console.log(connectedTemplates);
       let parsedVariables = pug.match(/(?:!{([^}]+)}|#{([^}]+)})/g);
       let unique = new Set(parsedVariables);
       let varsWithAssociated = this.legalTemplate.variables;
