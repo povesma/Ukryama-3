@@ -55,7 +55,7 @@ export default {
                         </div>\
                     </li>\
                 </ul>\
-                <button @click="formDocument">Сформувати документ</button>\
+                <button @click="formDocument">Показати сформований документу</button>\
                 <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
                 <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
             </div>
