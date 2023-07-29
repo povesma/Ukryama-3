@@ -77,6 +77,7 @@ var vmMain = new Vue({
         this.tags = [...new Set(this.tags)];
       }
     }.bind(this);
+    this.rootReadNotBodies();
   },
 
   methods: {
@@ -98,6 +99,31 @@ var vmMain = new Vue({
             }
           });
           this.tags = [...new Set(this.tags)];
+          this.displayClearFilters = false;
+        }
+      }.bind(this);
+    },
+    rootReadNotBodies: function () {
+      console.log("hi from readNotBodies");
+      var xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        prefix + "api/templates?type=footer&type=header&type=applications"
+      );
+      xhr.send();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState != 4) return;
+        if (xhr.status != 200) {
+          alert(xhr.status + ": " + xhr.statusText);
+        } else {
+          JSON.parse(xhr.responseText).forEach((elem, index) => {
+            this.legalTemplates[
+              this.legalTemplates.findIndex(
+                (template) => template.id === elem.id
+              )
+            ] = elem;
+          });
+
           this.displayClearFilters = false;
         }
       }.bind(this);
@@ -133,21 +159,18 @@ var vmMain = new Vue({
 
     rootFormDocument: function (variables, pug, header, footer, application) {
       var variables4fsm = {};
-      f = function (o, a, VAL) {
-        a.reduce((p, e, i) => {
-          if (i == a.length - 1) {
-            p[e] = VAL;
-          } else {
-            if (!p[e]) {
-              p[e] = {};
-            }
-            return p[e];
-          }
-        }, o);
-      };
       variables.forEach((e) => {
-        let sp = e.name.split(".");
-        f(variables4fsm, sp, e.testValue);
+        let sp = e.name.split("."); // Розбиття рядка `name` на підрядки, використовуючи крапку як роздільник
+        sp.reduce((p, prop, i, arr) => {
+          if (i === arr.length - 1) {
+            p[prop] = e.testValue; // Присвоєння значення `testValue` властивості `prop` об'єкту `p`
+          } else {
+            if (!p[prop]) {
+              p[prop] = {}; // Створення порожнього об'єкту, якщо властивість `prop` ще не існує
+            }
+            return p[prop]; // Повернення наступного вкладеного об'єкту для наступної ітерації
+          }
+        }, variables4fsm); // Початковий об'єкт `variables4fsm`, в якому зберігаються значення змінних
       });
 
       var requestObj = {

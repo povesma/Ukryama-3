@@ -4,6 +4,8 @@ export default {
       isActive: null,
       formedDocument: String,
       formedDocumentActive: Boolean,
+      varsWithAssociated: Array,
+      pug: String,
     };
   },
   props: {
@@ -17,7 +19,7 @@ export default {
                 <h2>Задавання змінних\
                     <button @click="createLegalTemplateVariable" class="btn_create" title="Додати змінну"><i class="fas fa-plus"></i></button> \
                 </h2>\
-                <button @click="updateVariables">Оновити змінні</button>\
+                <button @click="updateVariables">Підтягнути змінні</button>\
                 <ul class="tpl_chan">\
                     <li v-for="(variable, index) in legalTemplate.variables" v-bind:class="{ active: index == isActive }" >\
                         <div class="tpl_chan_heading" @click="showAdvanced(index)"> \
@@ -53,7 +55,7 @@ export default {
                         </div>\
                     </li>\
                 </ul>\
-                <button @click="formDocument">Сформувати документ</button>\
+                <button @click="formDocument">Показати сформований документ</button>\
                 <button @click="displayVariablesJSON">Сформувати JSON зі змінними</button>\
                 <div v-if="displayJSON"> {{  JSON.stringify(renderedVariables, null, 2)  }} </div>\
             </div>
@@ -92,8 +94,23 @@ export default {
     },
 
     updateVariables: function () {
-      var parsedVariables = this.legalTemplate.pug.match(/#{\\S+}/g);
+      let pug = this.legalTemplate.pug;
+      let connectedTemplatesTitles = ["header", "footer", "application"];
+      let connectedTemplates = {};
+      connectedTemplatesTitles.forEach((elem) => {
+        template = this.legalTemplates.find((templ) => {
+          templ.id === this.legalTemplate[elem].pug;
+        });
+        connectedTemplates[elem] = {
+          pug: template.pug,
+          variables: template.variables,
+        };
+      });
+      console.log(connectedTemplates);
+      let parsedVariables = pug.match(/(?:!{([^}]+)}|#{([^}]+)})/g);
       let unique = new Set(parsedVariables);
+      let varsWithAssociated = this.legalTemplate.variables;
+
       parsedVariables = Array.from(unique);
       unique = undefined;
 
@@ -101,35 +118,27 @@ export default {
         return item.slice(2, -1);
       });
 
-      function changes(old, n) {
-        oldArray = old.map((obj) => {
+      function changes(old, actual) {
+        varsWithAssociated = old.map((obj) => {
           return obj.name;
         });
 
         return [
-          oldArray.filter((e) => {
-            return !n.includes(e);
+          varsWithAssociated.filter((e) => {
+            return !actual.includes(e);
           }),
-          n.filter((e) => {
-            return !oldArray.includes(e);
+          actual.filter((e) => {
+            return !varsWithAssociated.includes(e);
           }),
         ];
       }
 
-      result = changes(this.legalTemplate.variables, parsedVariables);
-      if (
-        confirm(
-          "Зникли: " +
-            result[0] +
-            "\\n\\nЗ'явились:" +
-            result[1] +
-            "\\nОновити змінні?"
-        )
-      ) {
+      let result = changes(this.legalTemplate.variables, parsedVariables);
+      if (confirm("Знайдено:" + result[1] + "\nОновити змінні?")) {
         var disappeared = [];
 
         result[0].forEach((e) => {
-          disappeared.push(oldArray.indexOf(e));
+          disappeared.push(varsWithAssociated.indexOf(e));
         });
         this.legalTemplate.variables.forEach((item, i) => {
           if (disappeared.includes(i)) {
